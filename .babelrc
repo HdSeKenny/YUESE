@@ -1,0 +1,14 @@
+{
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-export-default-from",
+    "add-module-exports",
+    "transform-export-extensions",
+    "transform-async-to-generator",
+    "transform-class-properties"
+  ]
+}
