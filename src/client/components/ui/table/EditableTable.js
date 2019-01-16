@@ -260,16 +260,14 @@ class EditableTable extends React.Component {
         const editable = this.isEditing(record)
         const scoresHistoryContent = (
           <div className="scores-history">
-            {record.scores_history.reverse().map(sh => {
-              const { created_at, history } = sh
-              const { label, action, value } = history
-              console.log(label, action, value)
+            {record.scores_history.reverse().map((sh, idx) => {
+              const { created_at, label, action, value } = sh
               return (
-                <div className="score-row" key={created_at}>
+                <div className="score-row" key={idx}>
                   <p>
                     <span className="created-at">{moment(created_at).format("YYYY/MM/DD, hh:mm:ss")} :</span>
                     <span className="label">{label}</span>
-                    <span className={`action ${action === '加分' ? 'add' : 'reduce'}`}>{action}</span>
+                    <span className={`action ${action === '加分' ? 'add' : 'reduce'}`}>{action.substring(0, 1)}</span>
                     <span className="value">{value} 分</span>
                   </p>
                 </div>
@@ -291,7 +289,7 @@ class EditableTable extends React.Component {
             )}
             {!editable && isAdmin && <span className="edit" onClick={() => this.edit(record.key)}>修改</span>}
             {!editable && isAdmin && <span className="delete" onClick={() => this.showConfirm(record)}>删除</span>}
-            <Popover content={scoresHistoryContent} placement="left" title="玩家历史DKP明细" trigger="click">
+            <Popover content={scoresHistoryContent} placement="left" title="玩家历史DKP明细" trigger="hover">
               <span className="details">明细</span>
             </Popover>
           </div>

@@ -66,21 +66,39 @@ export default class DKP extends Component {
       scoreObj,
       selectedPlayers: selectedRowKeys
     }).then(() => {
-      const newPlayers = players.filter(p => selectedRowKeys.includes(p._id)).map((pl) => {
-        if (scoreObj.action.action === 'A') {
-          pl.scores.history_total_dkp += parseInt(scoreObj.value, 10)
-          pl.scores.left_total_dkp += parseInt(scoreObj.value, 10)
-        } else {
-          pl.scores.left_total_dkp -= parseInt(scoreObj.value, 10)
+      // const newPlayers = players.filter(p => selectedRowKeys.includes(p._id)).map((pl) => {
+      //   if (scoreObj.action.action === 'A') {
+      //     pl.scores.history_total_dkp += parseInt(scoreObj.value, 10)
+      //     pl.scores.left_total_dkp += parseInt(scoreObj.value, 10)
+      //   } else {
+      //     pl.scores.left_total_dkp -= parseInt(scoreObj.value, 10)
+      //   }
+      //   pl.scores.auction_dkp = Math.trunc(pl.scores.left_total_dkp * 0.7) // 剩余DKP总分的百分之70
+      //   return pl
+      // })
+
+      players.forEach(p => {
+        if (selectedRowKeys.includes(p._id)) {
+          if (scoreObj.action.action === 'A') {
+            p.scores.history_total_dkp += parseInt(scoreObj.value, 10)
+            p.scores.left_total_dkp += parseInt(scoreObj.value, 10)
+          } else {
+            p.scores.left_total_dkp -= parseInt(scoreObj.value, 10)
+          }
+          p.scores_history.push({
+            label: scoreObj.label,
+            action: scoreObj.action.value,
+            value: scoreObj.value,
+            created_at: scoreObj.createdAt 
+          })
+          p.scores.auction_dkp = Math.trunc(p.scores.left_total_dkp * 0.7) // 剩余DKP总分的百分之70
         }
-        pl.scores.auction_dkp = Math.trunc(pl.scores.left_total_dkp * 0.7) // 剩余DKP总分的百分之70
-        return pl
       })
 
       this.setState({
         changeVisible: false,
-        players: newPlayers,
-        searchedPlayers: newPlayers
+        players,
+        searchedPlayers: players
       }, () => message.success('修改成功！'))
     }).catch(err => console.log(err))
   }

@@ -53,7 +53,8 @@ class CalculateScoresForm extends React.Component {
     this.props.onSubmitScoreChange({
       action: currentAction,
       label: scorelabel,
-      value: scoreValue
+      value: scoreValue,
+      createdAt: new Date()
     })
   }
 
