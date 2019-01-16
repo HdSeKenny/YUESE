@@ -42,7 +42,8 @@ export default new Promise((resolve, reject) => {
           left_total_dkp: 100,
           auction_dkp: 70,
           player_total_score: 31231313131
-        }
+        },
+        scores_history: []
       },
       {
         name: '虾虾包',
@@ -51,7 +52,8 @@ export default new Promise((resolve, reject) => {
           left_total_dkp: 300,
           auction_dkp: 210,
           player_total_score: 100000000000
-        }
+        },
+        scores_history: []
       },
     )
       .then(() => console.log('finished populating players'))

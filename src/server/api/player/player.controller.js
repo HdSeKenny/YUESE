@@ -105,6 +105,9 @@ export function upsert(req, res) {
   if (req.body._id) {
     Reflect.deleteProperty(req.body, '_id')
   }
+
+  req.body.scores.auction_dkp = Math.trunc(req.body.scores.left_total_dkp * 0.7)
+
   return Player.findOneAndUpdate({ _id: req.params.id }, req.body, {
     new: true,
     upsert: true,
@@ -137,7 +140,7 @@ const findOneAndUpdate = (id, item) => () => new Promise((resolve, reject) => {
 
       player.scores.auction_dkp = Math.trunc(player.scores.left_total_dkp * 0.7) // 剩余DKP总分的百分之70
       player.scores_history.push({
-        description: `${item.scorelabel} - ${item} - ${item.value}分`,
+        description: `${item.label} - ${item.action.value} - ${item.value}分`,
         created_at: new Date()
       })
       player.save().then(() => resolve()).catch(err => reject(err))

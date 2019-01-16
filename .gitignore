@@ -1,5 +1,5 @@
-.vscode
+# .vscode
 node_modules
-dist
+# dist
 *.log
 yarn.lock

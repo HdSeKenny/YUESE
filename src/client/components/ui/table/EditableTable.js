@@ -4,7 +4,7 @@
   react/no-multi-comp: "off"
 */
 import React from 'react'
-import { Table, Input, InputNumber, Popconfirm, Form, Modal } from 'antd'
+import { Table, Input, InputNumber, Popconfirm, Form, Modal, Popover, Button } from 'antd'
 
 const FormItem = Form.Item
 const EditableContext = React.createContext()
@@ -76,7 +76,8 @@ class EditableTable extends React.Component {
     history_total_dkp: d.scores.history_total_dkp,
     left_total_dkp: d.scores.left_total_dkp,
     auction_dkp: d.scores.auction_dkp,
-    player_total_score: d.scores.player_total_score
+    player_total_score: d.scores.player_total_score,
+    scores_history: d.scores_history
   }))
 
   handleChange = (pagination, filters, sorter) => {
@@ -107,7 +108,7 @@ class EditableTable extends React.Component {
       if (index > -1) {
         item = newData[index]
         item.scores = {
-          auction_dkp: row.auction_dkp,
+          auction_dkp: Math.trunc(row.left_total_dkp * 0.7),
           history_total_dkp: row.history_total_dkp,
           left_total_dkp: row.left_total_dkp,
           player_total_score: row.player_total_score
@@ -117,7 +118,7 @@ class EditableTable extends React.Component {
         item = {
           name: row.name,
           scores: {
-            auction_dkp: row.auction_dkp,
+            auction_dkp: Math.trunc(row.left_total_dkp * 0.7),
             history_total_dkp: row.history_total_dkp,
             left_total_dkp: row.left_total_dkp,
             player_total_score: row.player_total_score
@@ -173,7 +174,7 @@ class EditableTable extends React.Component {
         title: '昵称',
         dataIndex: 'name',
         key: 'name',
-        width: '20%',
+        width: '18%',
         align: 'center',
         className: 'header',
         editable: true,
@@ -206,8 +207,8 @@ class EditableTable extends React.Component {
         key: 'auction_dkp',
         width: '15%',
         align: 'center',
-        className: 'header',
-        editable: true,
+        className: 'header auction_dkp',
+        editable: false,
         sorter: (a, b) => b.auction_dkp - a.auction_dkp,
         sortOrder: sortedInfo.columnKey === 'auction_dkp' && sortedInfo.order
       },
@@ -246,32 +247,44 @@ class EditableTable extends React.Component {
       }
     })
 
-    if (isAdmin) {
-      columns.push({
-        title: '操作',
-        dataIndex: 'operation',
-        align: 'center',
-        className: 'header',
-        render: (text, record) => {
-          const editable = this.isEditing(record)
-          return (
-            <div className="table-edit">
-              {editable ? (
-                <span>
-                  <EditableContext.Consumer>
-                    {form => (<span className="save" onClick={() => this.save(form, record.key)} style={{ marginRight: 8 }}>保存</span>)}
-                  </EditableContext.Consumer>
-                  <Popconfirm title="确定取消?" onConfirm={() => this.cancel(record.key)}>
-                    <span className="cancel">取消</span>
-                  </Popconfirm>
-                </span>
-              ) : (<span className="edit" onClick={() => this.edit(record.key)}>修改</span>)}
-              {!editable && <span className="delete" onClick={() => this.showConfirm(record)}>删除</span>}
-            </div>
-          )
-        }
-      })
-    }
+    columns.push({
+      title: '操作',
+      dataIndex: 'operation',
+      align: 'center',
+      className: 'header',
+      render: (text, record) => {
+        const editable = this.isEditing(record)
+        const scoresHistoryContent = (
+          <div className="scores-history">
+            {record.scores_history.map(sh => (
+              <div className="" key={sh.created_at}>
+                <p>{sh.created_at}</p>
+                <p>{sh.description}</p>
+              </div>
+            ))}
+          </div>
+        )
+        return (
+          <div className="table-edit">
+            {editable && isAdmin && (
+              <span>
+                <EditableContext.Consumer>
+                  {form => (<span className="save" onClick={() => this.save(form, record.key)} style={{ marginRight: 8 }}>保存</span>)}
+                </EditableContext.Consumer>
+                <Popconfirm title="确定取消?" onConfirm={() => this.cancel(record.key)}>
+                  <span className="cancel">取消</span>
+                </Popconfirm>
+              </span>
+            )}
+            {!editable && isAdmin && <span className="edit" onClick={() => this.edit(record.key)}>修改</span>}
+            {!editable && isAdmin && <span className="delete" onClick={() => this.showConfirm(record)}>删除</span>}
+            <Popover content={scoresHistoryContent} placement="left" title="明细" trigger="hover">
+              <span className="details">明细</span>
+            </Popover>
+          </div>
+        )
+      }
+    })
 
     return (
       <Table
