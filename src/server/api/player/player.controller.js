@@ -140,7 +140,11 @@ const findOneAndUpdate = (id, item) => () => new Promise((resolve, reject) => {
 
       player.scores.auction_dkp = Math.trunc(player.scores.left_total_dkp * 0.7) // 剩余DKP总分的百分之70
       player.scores_history.push({
-        description: `${item.label} - ${item.action.value} - ${item.value}分`,
+        history: {
+          label: item.label,
+          action: item.action.value,
+          value: item.value
+        },
         created_at: new Date()
       })
       player.save().then(() => resolve()).catch(err => reject(err))

@@ -8,6 +8,7 @@ class CalculateScoresForm extends React.Component {
       '周五联赛第二场',
       '周六联赛',
       '势力战',
+      '宣战',
       '野外激情',
       '藏金谷激情',
       '其他'
