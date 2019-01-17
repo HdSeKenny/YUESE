@@ -12,7 +12,7 @@ export default function (app) {
   // app.route('/:url(api|auth|components|app|bower_components|assets)/*').get(errors[404])
   app.route('/*').get((req, res) => {
     const env = process.env.NODE_ENV = process.env.NODE_ENV || 'development'
-    const indexPath = env === 'production' ? '/index.html' : `${app.get('appPath')}/index.html`
+    const indexPath = env === 'production' ? '/build/index.html' : `${app.get('appPath')}/index.html`
     res.sendFile(path.resolve(indexPath))
   })
 }

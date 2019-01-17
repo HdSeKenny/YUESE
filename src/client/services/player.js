@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { Promise } from 'mongoose';
 
 export default {
   addPlayer: data => new Promise((resolve, reject) => {

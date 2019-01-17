@@ -28,12 +28,12 @@ export default function (app) {
 
   if (env === 'production') {
     app.use(favicon(path.join(config.root, '..', 'public', 'favicon.ico')))
-    app.use(express.static('dist'))
+    app.use(express.static('dist/build'))
   }
 
   app.use(morgan('dev'))
   app.set('appPath', path.join(config.root, 'client'))
-  app.use(express.static(app.get('appPath')))
+  app.use(express.static('src'))
 
   app.set('views', path.join(config.root, 'server', 'views'))
   app.set('view engine', 'html')
@@ -102,7 +102,7 @@ export default function (app) {
       </StaticRouter>
     )
     // const indexFilePath = env === 'production' ?
-    const proPath = path.resolve(config.root, '..', 'dist', 'index.html')
+    const proPath = path.resolve(config.root, '..', 'dist', 'build', 'index.html')
     const devPath = path.resolve(app.get('appPath'), 'index.html')
     const indexFile = env === 'production' ? proPath : devPath
     fs.readFile(indexFile, 'utf8', (err, data) => {

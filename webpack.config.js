@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-const outputDirectory = 'dist'
+const outputDirectory = 'dist/build'
 
 module.exports = {
   entry: ['babel-polyfill', './src/client/index.js'],
@@ -51,6 +51,7 @@ module.exports = {
       // '/api': 'http://localhost:8080'
     }
   },
+  devtool: 'source-map',
   plugins: [
     new CleanWebpackPlugin([outputDirectory]),
 
