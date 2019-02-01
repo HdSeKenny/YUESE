@@ -1,0 +1,244 @@
+h1 {
+  color: #008000;
+}
+body {
+  text-align: center;
+  margin: auto;
+}
+.ant-layout-header {
+  padding: 0 10%;
+}
+@media screen and (max-width: 812px) {
+  .ant-layout-header {
+    padding: 0 3%;
+  }
+}
+.ant-layout-footer {
+  padding: 25px 10%;
+}
+@media screen and (max-width: 812px) {
+  .ant-layout-footer {
+    padding: 25px 3%;
+  }
+}
+.ant-layout-content {
+  padding: 25px 10%;
+  min-height: 678px;
+  background: #fff;
+}
+@media screen and (max-height: 736px) {
+  .ant-layout-content {
+    min-height: 600px;
+  }
+}
+@media screen and (max-width: 812px) {
+  .ant-layout-content {
+    padding: 25px 3%;
+  }
+}
+.ant-layout-footer {
+  background: #fafafa;
+}
+.text-error {
+  text-align: left;
+  color: #f5222d;
+}
+.header.ant-layout-header {
+  background: #fafafa;
+  box-shadow: 0 2px 8px #f0f1f2;
+}
+.header .logo {
+  background: rgba(255,255,255,0.2);
+  float: left;
+}
+.header .logo .ant-menu-item {
+  margin-left: 50px;
+}
+.header .ant-menu-item {
+  float: right;
+}
+.header .ant-menu-horizontal {
+  background: #fafafa;
+  border-bottom: none;
+}
+.header .dkp-system {
+  padding-right: 0;
+}
+.ant-menu-horizontal > .ant-menu-item:hover,
+.ant-menu-horizontal > .ant-menu-submenu:hover,
+.ant-menu-horizontal > .ant-menu-item-active,
+.ant-menu-horizontal > .ant-menu-submenu-active,
+.ant-menu-horizontal > .ant-menu-item-open,
+.ant-menu-horizontal > .ant-menu-submenu-open,
+.ant-menu-horizontal > .ant-menu-item-selected,
+.ant-menu-horizontal > .ant-menu-submenu-selected {
+  border-bottom: none;
+  font-weight: 600;
+}
+.editable-row {
+  text-align: center;
+}
+.editable-row .ant-form-explain {
+  position: absolute;
+  font-size: 12px;
+  margin-top: -4px;
+}
+.ant-table-thead > tr.ant-table-row-hover:not(.ant-table-expanded-row) > td,
+.ant-table-tbody > tr.ant-table-row-hover:not(.ant-table-expanded-row) > td,
+.ant-table-thead > tr:hover:not(.ant-table-expanded-row) > td,
+.ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+  background: #fafafa;
+}
+.table-edit .edit,
+.table-edit .save,
+.table-edit .cancel {
+  margin-right: 10px;
+  color: #1890ff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+@media screen and (max-width: 812px) {
+  .table-edit .edit,
+  .table-edit .save,
+  .table-edit .cancel {
+    font-size: 12px;
+  }
+}
+.table-edit .delete {
+  margin-right: 10px;
+  color: #f5222d;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+@media screen and (max-width: 812px) {
+  .table-edit .delete {
+    font-size: 13px;
+  }
+}
+.table-edit .details {
+  color: #800080;
+  font-size: 15px;
+  font-weight: 600;
+}
+@media screen and (max-width: 812px) {
+  .table-edit .details {
+    font-size: 13px;
+  }
+}
+.scores-history .score-row .created-at {
+  margin-right: 10px;
+}
+.scores-history .score-row .label {
+  margin-right: 10px;
+}
+.scores-history .score-row .action {
+  margin-right: 10px;
+}
+.scores-history .score-row .action.add {
+  color: #008000;
+}
+.scores-history .score-row .action.reduce {
+  color: #f00;
+}
+.scores-history .score-row .value {
+  font-size: 15px;
+  color: #1890ff;
+  font-weight: 600;
+}
+@media screen and (max-width: 812px) {
+  .scores-history .score-row .value {
+    font-size: 13px;
+  }
+}
+.dkp .ant-table-wrapper {
+  overflow-x: auto;
+}
+.search-box {
+  margin-bottom: 25px;
+}
+.search-box button {
+  float: right;
+}
+.add-member {
+  margin-left: 20px;
+}
+.add-row {
+  margin: 10px 0;
+}
+.label {
+  margin: 5px 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+@media screen and (max-width: 414px) {
+  .ant-table-content .ant-table-thead .header.name div {
+    width: 60px;
+  }
+}
+@media screen and (max-width: 414px) {
+  .ant-table-content .ant-table-thead .header.actions div {
+    width: 100px;
+  }
+}
+@media screen and (max-width: 414px) {
+  .ant-table-content .ant-table-thead .header .ant-table-column-sorters {
+    width: 60px;
+  }
+}
+@media screen and (max-width: 812px) {
+  .ant-table-content .ant-table-body {
+    font-size: 12px;
+  }
+}
+.ant-table-content .ant-table-body th.header {
+  color: #000;
+  font-size: 15px;
+  font-weight: 700;
+}
+@media screen and (max-width: 812px) {
+  .ant-table-content .ant-table-body th.header {
+    font-size: 12px;
+  }
+}
+.ant-table-content .ant-table-body .player_total_score {
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  font-style: italic;
+}
+@media screen and (max-width: 812px) {
+  .ant-table-content .ant-table-body .player_total_score {
+    font-size: 12px;
+  }
+}
+.ant-table-content .ant-table-body .name {
+  color: #1890ff;
+  font-weight: 600;
+}
+.ant-modal-wrap .ant-modal-content .ant-modal-body .actions-btn {
+  width: 90%;
+}
+.login-form {
+  margin-top: 50px;
+}
+@media screen and (min-width: 813px) {
+  .login-form {
+    margin: 50px 30%;
+  }
+}
+.login-form .form-title {
+  margin-bottom: 20px;
+}
+.login-form .form-title .color-6 {
+  color: #1890ff;
+}
+.login-form .login-btn {
+  width: 100%;
+}
+.login-form .remember-me {
+  float: left;
+}
+
+/*# sourceMappingURL=main.css.map*/
