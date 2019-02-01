@@ -1,3 +1,6 @@
+.dkp
+  .ant-table-wrapper
+    overflow-x: auto
 .search-box
   margin-bottom 25px
   button
@@ -8,20 +11,39 @@
     margin 10px 0
   .label
     margin 5px 0
-    font-family 15px
+    font-size 15px
     font-weight 600
 
 .ant-table-content
+  .ant-table-thead
+    .header
+      &.name
+        div
+          @media screen and (max-width: 414px)
+            width 60px
+      &.actions
+        div
+          @media screen and (max-width: 414px)
+            width 100px
+      .ant-table-column-sorters
+        @media screen and (max-width: 414px)
+          width 60px
   .ant-table-body
+    @media screen and (max-width: 812px)
+      font-size 12px
     th.header
       color black
       font-size 15px
       font-weight 700
+      @media screen and (max-width: 812px)
+        font-size 12px
     .player_total_score
       color black
       font-size 14px
       font-weight 700
       font-style italic
+      @media screen and (max-width: 812px)
+        font-size 12px
     .name
       color #1890ff
       font-weight 600

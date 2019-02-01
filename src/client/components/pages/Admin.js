@@ -42,57 +42,43 @@ class NormalLoginForm extends React.Component {
       <Form onSubmit={this.handleSubmit} className="login-form">
         {errorMessage && (
           <Row>
-            <Col span={8} />
-            <Col span={8}><p className="text-error">{errorMessage}</p></Col>
+            <p className="text-error">{errorMessage}</p>
           </Row>
         )}
         <Row className="form-title">
-          <Col span={8} />
-          <Col span={8}><h2 className="color-6">管理员登录</h2></Col>
+          <h2 className="color-6">管理员登录</h2>
         </Row>
         <Row>
-          <Col span={8} />
-          <Col span={8}>
-            <Form.Item>
-              {getFieldDecorator('email', {
-                rules: [
-                  { type: 'email', message: 'The input is not valid E-mail!' },
-                  { required: true, message: 'Please input your E-mail!' }
-                ]
-              })(
-                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
-              )}
-            </Form.Item>
-          </Col>
+          <Form.Item>
+            {getFieldDecorator('email', {
+              rules: [
+                { type: 'email', message: 'The input is not valid E-mail!' },
+                { required: true, message: 'Please input your E-mail!' }
+              ]
+            })(
+              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+            )}
+          </Form.Item>
         </Row>
         <Row>
-          <Col span={8} />
-          <Col span={8}>
-            <Form.Item>
-              {getFieldDecorator('password', {
-                rules: [{ required: true, message: 'Please input your Password!' }],
-              })(
-                <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
-              )}
-            </Form.Item>
-          </Col>
+          <Form.Item>
+            {getFieldDecorator('password', {
+              rules: [{ required: true, message: 'Please input your Password!' }],
+            })(
+              <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+            )}
+          </Form.Item>
         </Row>
         <Row>
-          <Col span={8} />
-          <Col span={8}>
-            <Form.Item className="remember-me">
-              {getFieldDecorator('remember', {
-                valuePropName: 'checked',
-                initialValue: true,
-              })(<Checkbox>记住我</Checkbox>)}
-            </Form.Item>
-          </Col>
+          <Form.Item className="remember-me">
+            {getFieldDecorator('remember', {
+              valuePropName: 'checked',
+              initialValue: true,
+            })(<Checkbox>记住我</Checkbox>)}
+          </Form.Item>
         </Row>
         <Row>
-          <Col span={8} />
-          <Col span={8}>
-            <Button type="primary" htmlType="submit" className="login-btn">登录</Button>
-          </Col>
+          <Button type="primary" htmlType="submit" className="login-btn">登录</Button>
         </Row>
       </Form>
     )

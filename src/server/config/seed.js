@@ -6,10 +6,11 @@
 import User from '../api/user/user.model'
 import Player from '../api/player/player.model'
 import config from './environment'
+import data from './environment/_data'
 
 export default new Promise((resolve, reject) => {
   if (!config.seedDB) {
-    resolve()
+    return resolve()
   }
 
   const userPromise = User.find({})
@@ -17,16 +18,17 @@ export default new Promise((resolve, reject) => {
     .then(() => User.create(
       {
         provider: 'local',
-        name: 'Test User',
-        email: 'test@example.com',
-        password: 'test'
+        role: 'admin',
+        name: 'Admin',
+        email: 'admin@kenny.com',
+        password: 'kuan4928..'
       },
       {
         provider: 'local',
         role: 'admin',
         name: 'Admin',
-        email: 'admin@example.com',
-        password: 'admin'
+        email: 'admin@yuese.com',
+        password: 'yuese520'
       }
     )
       .then(() => console.log('finished populating users'))
@@ -34,30 +36,12 @@ export default new Promise((resolve, reject) => {
 
   const playrPromise = Player.find({})
     .remove()
-    .then(() => Player.create(
-      {
-        name: 'Test User',
-        scores: {
-          history_total_dkp: 31231,
-          left_total_dkp: 100,
-          auction_dkp: 70,
-          player_total_score: 31231313131
-        },
-        scores_history: []
-      },
-      {
-        name: '虾虾包',
-        scores: {
-          history_total_dkp: 200000,
-          left_total_dkp: 300,
-          auction_dkp: 210,
-          player_total_score: 100000000000
-        },
-        scores_history: []
-      },
-    )
-      .then(() => console.log('finished populating players'))
-      .catch(err => console.log('error populating players', err)))
+    .then(() => {
+      const _data = data.sort((a, b) => a.scores.history_total_dkp - b.scores.history_total_dkp)
+      Player.create(_data)
+        .then(() => console.log('finished populating players'))
+        .catch(err => console.log('error populating players', err))
+    })
 
   Promise.all([
     userPromise,

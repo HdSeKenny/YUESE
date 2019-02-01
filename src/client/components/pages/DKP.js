@@ -52,7 +52,8 @@ export default class DKP extends Component {
           this.setState({
             players,
             addVisible: false,
-            confirmLoading: false }, () => {
+            confirmLoading: false
+          }, () => {
             message.success('成功添加玩家')
           })
         }, 1500)
@@ -66,18 +67,7 @@ export default class DKP extends Component {
       scoreObj,
       selectedPlayers: selectedRowKeys
     }).then(() => {
-      // const newPlayers = players.filter(p => selectedRowKeys.includes(p._id)).map((pl) => {
-      //   if (scoreObj.action.action === 'A') {
-      //     pl.scores.history_total_dkp += parseInt(scoreObj.value, 10)
-      //     pl.scores.left_total_dkp += parseInt(scoreObj.value, 10)
-      //   } else {
-      //     pl.scores.left_total_dkp -= parseInt(scoreObj.value, 10)
-      //   }
-      //   pl.scores.auction_dkp = Math.trunc(pl.scores.left_total_dkp * 0.7) // 剩余DKP总分的百分之70
-      //   return pl
-      // })
-
-      players.forEach(p => {
+      players.forEach((p) => {
         if (selectedRowKeys.includes(p._id)) {
           if (scoreObj.action.action === 'A') {
             p.scores.history_total_dkp += parseInt(scoreObj.value, 10)
@@ -89,9 +79,9 @@ export default class DKP extends Component {
             label: scoreObj.label,
             action: scoreObj.action.value,
             value: scoreObj.value,
-            created_at: scoreObj.createdAt 
+            created_at: scoreObj.createdAt
           })
-          p.scores.auction_dkp = Math.trunc(p.scores.left_total_dkp * 0.7) // 剩余DKP总分的百分之70
+          p.scores.auction_dkp = Math.trunc(p.scores.left_total_dkp * 0.7)
         }
       })
 
@@ -145,17 +135,14 @@ export default class DKP extends Component {
     return (
       <div className="dkp">
         <Row className="search-box">
-          <Col span={8}>
+          <Col span={10}>
             <Input size="large" placeholder="搜索" value={searchValue} onChange={e => this.onSearchMember(e)} />
           </Col>
-          <Col span={8} />
+
           {currentUser && currentUser.role === 'admin' && (
-            <Col span={8}>
+            <Col span={14}>
               <Button type="primary" className="add-member" onClick={() => this.showAddModal()}>添加成员</Button>
-              <Button type="primary" ghost onClick={() => this.showScoreChangeModal()}>
-                {selectedRowKeys.length ? `对 ${selectedRowKeys.length} 人` : ''}
-                批量操作
-              </Button>
+              <Button type="primary" ghost onClick={() => this.showScoreChangeModal()}>批量操作</Button>
             </Col>
           )}
         </Row>

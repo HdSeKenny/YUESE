@@ -111,6 +111,7 @@ class EditableTable extends React.Component {
       let item;
       if (index > -1) {
         item = newData[index]
+        item.name = row.name
         item.scores = {
           auction_dkp: Math.trunc(row.left_total_dkp * 0.7),
           history_total_dkp: row.history_total_dkp,
@@ -178,27 +179,27 @@ class EditableTable extends React.Component {
         title: '昵称',
         dataIndex: 'name',
         key: 'name',
-        width: '18%',
+        // width: '18%',
         align: 'center',
-        className: 'header',
+        className: 'header name',
         editable: true,
       },
       {
         title: '历史DKP',
         dataIndex: 'history_total_dkp',
         key: 'history_total_dkp',
-        width: '15%',
+        // width: '15%',
         align: 'center',
         className: 'header',
         editable: true,
-        sorter: (a, b) => b.history_total_dkp - a.history_total_dkp,
+        sorter: (a, b) => a.history_total_dkp - b.history_total_dkp,
         sortOrder: sortedInfo.columnKey === 'history_total_dkp' && sortedInfo.order
       },
       {
         title: '剩余DKP',
         dataIndex: 'left_total_dkp',
         key: 'left_total_dkp',
-        width: '15%',
+        // width: '15%',
         align: 'center',
         className: 'header',
         editable: true,
@@ -206,10 +207,10 @@ class EditableTable extends React.Component {
         sortOrder: sortedInfo.columnKey === 'left_total_dkp' && sortedInfo.order
       },
       {
-        title: '本次拍卖可用',
+        title: '拍卖可用',
         dataIndex: 'auction_dkp',
         key: 'auction_dkp',
-        width: '15%',
+        // width: '15%',
         align: 'center',
         className: 'header auction_dkp',
         editable: false,
@@ -220,7 +221,7 @@ class EditableTable extends React.Component {
         title: '总评分',
         dataIndex: 'player_total_score',
         key: 'player_total_score',
-        width: '15%',
+        // width: '15%',
         align: 'center',
         className: 'header',
         editable: true,
@@ -255,7 +256,7 @@ class EditableTable extends React.Component {
       title: '操作',
       dataIndex: 'operation',
       align: 'center',
-      className: 'header',
+      className: 'header actions',
       render: (text, record) => {
         const editable = this.isEditing(record)
         const scoresHistoryContent = (
@@ -265,7 +266,7 @@ class EditableTable extends React.Component {
               return (
                 <div className="score-row" key={idx}>
                   <p>
-                    <span className="created-at">{moment(created_at).format("YYYY/MM/DD, hh:mm:ss")} :</span>
+                    <span className="created-at">{moment(created_at).format('YYYY/MM/DD, hh:mm:ss')} :</span>
                     <span className="label">{label}</span>
                     <span className={`action ${action === '加分' ? 'add' : 'reduce'}`}>{action.substring(0, 1)}</span>
                     <span className="value">{value} 分</span>
@@ -296,13 +297,13 @@ class EditableTable extends React.Component {
         )
       }
     })
-
+    const _data = data.sort((a, b) => b.history_total_dkp - a.history_total_dkp);
     return (
       <Table
         rowSelection={isAdmin ? rowSelection : null}
         components={components}
         bordered
-        dataSource={data}
+        dataSource={_data}
         columns={columns}
         onChange={this.handleChange}
         rowClassName="editable-row"

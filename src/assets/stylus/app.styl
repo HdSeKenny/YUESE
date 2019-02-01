@@ -6,15 +6,23 @@ body
   margin auto
 
 .ant-layout-header
-  padding 0 180px
+  padding 0 10%
+  @media screen and (max-width: 812px)
+    padding 0 3%
 
 .ant-layout-footer
-  padding 24px 180px
+  padding 25px 10%
+  @media screen and (max-width: 812px)
+    padding 25px 3%
 
 .ant-layout-content
-  padding 25px 180px
-  min-height  700px
+  padding 25px 10%
+  min-height 678px
+  @media screen and (max-height: 736px)
+    min-height 600px
   background #ffffff
+  @media screen and (max-width: 812px)
+    padding 25px 3%
 
 .ant-layout-footer
   background #FAFAFA

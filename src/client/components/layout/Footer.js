@@ -8,14 +8,14 @@ export default class Navbar extends Component {
       style: {
         textAlign: 'left'
       },
-      description: 'YUE SE ©2018 Created by Kenny'
+      description: 'YUE SE ©2018 Created by '
     };
   }
 
   render() {
     const { style, description } = this.state;
     return (
-      <Layout.Footer style={style}>{description}</Layout.Footer>
+      <Layout.Footer style={style}>{description}<a href="https://github.com/HdSeKenny">XIAXIABAO</a></Layout.Footer>
     );
   }
 }
