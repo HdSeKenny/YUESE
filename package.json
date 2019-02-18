@@ -4,9 +4,10 @@
   "description": "Boilerplate to build a full stack web application using React, Node.js, Express and Webpack.",
   "main": "src/server/index.js",
   "scripts": {
+    "webpack": "webpack --mode production",
     "build-server": "babel src/server -d dist/server",
     "build-client": "babel src/client -d dist/client",
-    "build": "npm run build && npm run build-server && npm run build-client",
+    "build": "npm run webpack && npm run build-server && npm run build-client",
     "start": "cross-env NODE_ENV=production node dist/server/index.js",
     "client": "webpack-dev-server --mode development --devtool inline-source-map --hot --content-base src/client",
     "server": "nodemon src/server/index.js",
