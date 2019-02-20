@@ -69,19 +69,19 @@ export default class DKP extends Component {
     }).then(() => {
       players.forEach((p) => {
         if (selectedRowKeys.includes(p._id)) {
-          if (scoreObj.action.action === 'A') {
-            p.scores.history_total_dkp += parseInt(scoreObj.value, 10)
-            p.scores.left_total_dkp += parseInt(scoreObj.value, 10)
+          if (scoreObj.action.label === 'A') {
+            p.scores.history_total_dkp += parseInt(scoreObj.scoreValue, 10)
+            p.scores.left_total_dkp += parseInt(scoreObj.scoreValue, 10)
           } else {
-            p.scores.left_total_dkp -= parseInt(scoreObj.value, 10)
+            p.scores.left_total_dkp -= parseInt(scoreObj.scoreValue, 10)
           }
-          p.scores_history.push({
-            label: scoreObj.label,
-            action: scoreObj.action.value,
-            value: scoreObj.value,
-            created_at: scoreObj.createdAt
-          })
           p.scores.auction_dkp = Math.trunc(p.scores.left_total_dkp * 0.7)
+          p.scores_history.unshift({
+            scoreLabel: scoreObj.scoreLabel,
+            actionValue: scoreObj.action.value,
+            scoreValue: scoreObj.scoreValue,
+            createdAt: scoreObj.createdAt
+          })
         }
       })
 
@@ -132,6 +132,7 @@ export default class DKP extends Component {
       const player = searchedPlayers.find(sp => sp._id === rowKey)
       return player ? player.name : ''
     }).join(', ')
+    const isAdmin = currentUser && currentUser.role === 'admin'
     return (
       <div className="dkp">
         <Row className="search-box">
@@ -139,7 +140,7 @@ export default class DKP extends Component {
             <Input size="large" placeholder="搜索" value={searchValue} onChange={e => this.onSearchMember(e)} />
           </Col>
 
-          {currentUser && currentUser.role === 'admin' && (
+          {isAdmin && (
             <Col span={14}>
               <Button type="primary" className="add-member" onClick={() => this.showAddModal()}>添加成员</Button>
               <Button type="primary" ghost onClick={() => this.showScoreChangeModal()}>批量操作</Button>

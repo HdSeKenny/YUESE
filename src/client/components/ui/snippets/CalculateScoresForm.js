@@ -1,5 +1,9 @@
 import React from 'react'
 import { Modal, Menu, Dropdown, Button, Icon, Input, Row, Col, message } from 'antd'
+import moment from 'moment'
+// import 'moment/locale/zh-cn'
+
+moment.locale()
 
 class CalculateScoresForm extends React.Component {
   state = {
@@ -17,20 +21,20 @@ class CalculateScoresForm extends React.Component {
       '玩家拍卖扣除'
     ],
 
-    scorelabel: '周五联赛第一场',
+    scoreLabel: '周五联赛第一场',
     scoreValue: '',
     actions: [
-      { action: 'A', value: '加分' },
-      { action: 'R', value: '减分' },
+      { label: 'A', value: '加分' },
+      { label: 'R', value: '减分' },
     ],
     currentAction: {
-      action: 'A',
+      label: 'A',
       value: '加分'
     },
   }
 
   handleMenuClick = (e) => {
-    this.setState({ scorelabel: e.key }, () => {
+    this.setState({ scoreLabel: e.key }, () => {
 
     })
   }
@@ -38,7 +42,7 @@ class CalculateScoresForm extends React.Component {
   handleActionsMenuClick = (e) => {
     const { actions, addScoreOptions, reduceScoreOptions } = this.state
     const newScoreLable = e.key === '加分' ? addScoreOptions[0] : reduceScoreOptions[0]
-    this.setState({ currentAction: actions.find(a => a.value === e.key), scorelabel: newScoreLable })
+    this.setState({ currentAction: actions.find(a => a.value === e.key), scoreLabel: newScoreLable })
   }
 
   onScoreValueChange = (e) => {
@@ -46,20 +50,21 @@ class CalculateScoresForm extends React.Component {
   }
 
   onSubmitScoreChange = () => {
-    const { currentAction, scoreValue, scorelabel } = this.state
+    const { currentAction, scoreValue, scoreLabel } = this.state
     if (!scoreValue.trim()) {
       return message.error('请填写分数，并且分数必须是数字')
     }
+
     this.props.onSubmitScoreChange({
       action: currentAction,
-      label: scorelabel,
-      value: scoreValue,
-      createdAt: new Date()
+      scoreLabel,
+      scoreValue,
+      createdAt: moment().format('YYYY/MM/DD, hh:mm:ss')
     })
   }
 
   render() {
-    const { addScoreOptions, reduceScoreOptions, scorelabel, scoreValue, actions, currentAction } = this.state
+    const { addScoreOptions, reduceScoreOptions, scoreLabel, scoreValue, actions, currentAction } = this.state
     const { changeVisible, hideChangeModal, confirmLoading, batchPlayersNameString } = this.props
     const addScoreMenu = (
       <Menu onClick={e => this.handleMenuClick(e)}>
@@ -112,16 +117,16 @@ class CalculateScoresForm extends React.Component {
             </Dropdown>
           </Col>
 
-          {currentAction.action === 'A' ? (
+          {currentAction.label === 'A' ? (
             <Col span={9} style={{ textAlign: 'left' }}>
               <Dropdown overlay={addScoreMenu}>
-                <Button className="actions-btn">{scorelabel || addScoreOptions[0]} <Icon type="down" /></Button>
+                <Button className="actions-btn">{scoreLabel || addScoreOptions[0]} <Icon type="down" /></Button>
               </Dropdown>
             </Col>
           ) : (
             <Col span={9} style={{ textAlign: 'left' }}>
               <Dropdown overlay={reduceScoreMenu}>
-                <Button className="actions-btn">{scorelabel || reduceScoreOptions[0]} <Icon type="down" /></Button>
+                <Button className="actions-btn">{scoreLabel || reduceScoreOptions[0]} <Icon type="down" /></Button>
               </Dropdown>
             </Col>
           )}

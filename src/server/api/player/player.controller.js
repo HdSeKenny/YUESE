@@ -120,7 +120,7 @@ export function upsert(req, res) {
 }
 
 const findOneAndUpdate = (id, item) => () => new Promise((resolve, reject) => {
-  Player.findById(id)
+  return Player.findById(id)
     .exec()
     .then((player) => {
       if (!player) {
@@ -131,21 +131,21 @@ const findOneAndUpdate = (id, item) => () => new Promise((resolve, reject) => {
         player.scores_history = []
       }
 
-      if (item.action.action === 'A') {
-        player.scores.history_total_dkp += parseInt(item.value, 10)
-        player.scores.left_total_dkp += parseInt(item.value, 10)
+      if (item.action.label === 'A') {
+        player.scores.history_total_dkp += parseInt(item.scoreValue, 10)
+        player.scores.left_total_dkp += parseInt(item.scoreValue, 10)
       } else {
-        player.scores.left_total_dkp -= parseInt(item.value, 10)
+        player.scores.left_total_dkp -= parseInt(item.scoreValue, 10)
       }
 
       player.scores.auction_dkp = Math.trunc(player.scores.left_total_dkp * 0.7) // 剩余DKP总分的百分之70
-      player.scores_history.push({
-        label: item.label,
-        action: item.action.value,
-        value: item.value,
-        created_at: item.created_at
+      player.scores_history.unshift({
+        scoreLabel: item.scoreLabel,
+        actionValue: item.action.value,
+        scoreValue: item.scoreValue,
+        createdAt: item.createdAt
       })
-      player.save().then(() => resolve()).catch(err => reject(err))
+      return player.save().then(() => resolve()).catch(err => reject(err))
     })
     .catch(err => reject(err))
 })

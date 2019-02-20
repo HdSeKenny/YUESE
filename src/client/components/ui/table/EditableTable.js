@@ -5,10 +5,6 @@
 */
 import React from 'react'
 import { Table, Input, InputNumber, Popconfirm, Form, Modal, Popover, Button } from 'antd'
-import moment from 'moment'
-// import 'moment/locale/zh-cn'
-
-moment.locale()
 
 const FormItem = Form.Item
 const EditableContext = React.createContext()
@@ -185,7 +181,7 @@ class EditableTable extends React.Component {
         editable: true,
       },
       {
-        title: '历史DKP',
+        title: '总历史',
         dataIndex: 'history_total_dkp',
         key: 'history_total_dkp',
         // width: '15%',
@@ -196,7 +192,7 @@ class EditableTable extends React.Component {
         sortOrder: sortedInfo.columnKey === 'history_total_dkp' && sortedInfo.order
       },
       {
-        title: '剩余DKP',
+        title: '剩余',
         dataIndex: 'left_total_dkp',
         key: 'left_total_dkp',
         // width: '15%',
@@ -261,15 +257,15 @@ class EditableTable extends React.Component {
         const editable = this.isEditing(record)
         const scoresHistoryContent = (
           <div className="scores-history">
-            {record.scores_history.reverse().map((sh, idx) => {
-              const { created_at, label, action, value } = sh
+            {record.scores_history.map((sh, idx) => {
+              const { createdAt, scoreLabel, actionValue, scoreValue } = sh
               return (
                 <div className="score-row" key={idx}>
                   <p>
-                    <span className="created-at">{moment(created_at).format('YYYY/MM/DD, hh:mm:ss')} :</span>
-                    <span className="label">{label}</span>
-                    <span className={`action ${action === '加分' ? 'add' : 'reduce'}`}>{action.substring(0, 1)}</span>
-                    <span className="value">{value} 分</span>
+                    <span className="created-at">{createdAt} :</span>
+                    <span className="label">{scoreLabel}</span>
+                    <span className={`action ${actionValue === '加分' ? 'add' : 'reduce'}`}>{actionValue.substring(0, 1)}</span>
+                    <span className="value">{scoreValue} 分</span>
                   </p>
                 </div>
               )
@@ -290,7 +286,7 @@ class EditableTable extends React.Component {
             )}
             {!editable && isAdmin && <span className="edit" onClick={() => this.edit(record.key)}>修改</span>}
             {!editable && isAdmin && <span className="delete" onClick={() => this.showConfirm(record)}>删除</span>}
-            <Popover content={scoresHistoryContent} placement="left" title="玩家历史DKP明细" trigger="hover">
+            <Popover content={scoresHistoryContent} placement="left" title="玩家历史DKP明细" trigger="click" overlayClassName="scores-history-overlay">
               <span className="details">明细</span>
             </Popover>
           </div>

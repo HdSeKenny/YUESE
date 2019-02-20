@@ -11,7 +11,6 @@ import _ from 'lodash'
   }
   return process.env[name];
 } */
-
 // All configurations will extend these options
 // ============================================
 const all = {

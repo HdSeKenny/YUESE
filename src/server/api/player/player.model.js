@@ -10,10 +10,10 @@ const PlayerSchema = new Schema({
     player_total_score: Number
   },
   scores_history: [{
-    label: String,
-    action: String,
-    value: String,
-    created_at: Date
+    scoreLabel: String,
+    actionValue: String,
+    scoreValue: String,
+    createdAt: String
   }]
 })
 
