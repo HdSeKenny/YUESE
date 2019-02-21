@@ -187,7 +187,7 @@ class EditableTable extends React.Component {
         // width: '15%',
         align: 'center',
         className: 'header',
-        editable: true,
+        editable: false,
         sorter: (a, b) => a.history_total_dkp - b.history_total_dkp,
         sortOrder: sortedInfo.columnKey === 'history_total_dkp' && sortedInfo.order
       },
@@ -198,7 +198,7 @@ class EditableTable extends React.Component {
         // width: '15%',
         align: 'center',
         className: 'header',
-        editable: true,
+        editable: false,
         sorter: (a, b) => b.left_total_dkp - a.left_total_dkp,
         sortOrder: sortedInfo.columnKey === 'left_total_dkp' && sortedInfo.order
       },

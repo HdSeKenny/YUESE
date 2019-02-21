@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Row, Col, Button, message } from 'antd'
+import { Input, Row, Col, Button, message,Spin } from 'antd'
 import { PlayerService } from '../../services'
 import { AddPlayerForm, CalculateScoresForm } from '../ui/snippets'
 import EditableTable from '../ui/table/EditableTable'
@@ -162,7 +162,6 @@ export default class DKP extends Component {
           confirmLoading={confirmLoading}
           batchPlayersNameString={batchPlayersNameString}
         />
-
         <EditableTable
           dataSource={searchedPlayers}
           currentUser={currentUser}
