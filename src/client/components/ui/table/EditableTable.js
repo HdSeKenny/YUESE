@@ -109,9 +109,9 @@ class EditableTable extends React.Component {
         item = newData[index]
         item.name = row.name
         item.scores = {
-          auction_dkp: Math.trunc(row.left_total_dkp * 0.7),
-          history_total_dkp: row.history_total_dkp,
-          left_total_dkp: row.left_total_dkp,
+          auction_dkp: item.scores.auction_dkp,
+          history_total_dkp: item.scores.history_total_dkp,
+          left_total_dkp: item.scores.left_total_dkp,
           player_total_score: row.player_total_score
         }
         newData.splice(index, 1, { ...item })
@@ -119,9 +119,9 @@ class EditableTable extends React.Component {
         item = {
           name: row.name,
           scores: {
-            auction_dkp: Math.trunc(row.left_total_dkp * 0.7),
-            history_total_dkp: row.history_total_dkp,
-            left_total_dkp: row.left_total_dkp,
+            auction_dkp: Math.trunc(item.scores.left_total_dkp * 0.7),
+            history_total_dkp: item.scores.history_total_dkp,
+            left_total_dkp: item.scores.left_total_dkp,
             player_total_score: row.player_total_score
           }
         }
