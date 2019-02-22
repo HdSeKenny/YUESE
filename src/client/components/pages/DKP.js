@@ -52,7 +52,8 @@ export default class DKP extends Component {
           this.setState({
             players,
             addVisible: false,
-            confirmLoading: false
+            confirmLoading: false,
+            searchedPlayers: players
           }, () => {
             message.success('成功添加玩家')
           })
