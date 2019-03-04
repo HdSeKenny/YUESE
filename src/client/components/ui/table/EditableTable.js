@@ -5,6 +5,7 @@
 */
 import React from 'react'
 import { Table, Input, InputNumber, Popconfirm, Form, Modal, Popover, Button } from 'antd'
+import configs from '../../../configs'
 
 const FormItem = Form.Item
 const EditableContext = React.createContext()
@@ -65,7 +66,7 @@ class EditableTable extends React.Component {
     super(props)
     this.state = {
       editingKey: '',
-      selectedRowKeys: [], // Check here to configure the default column
+      selectedRowKeys: [],
       sortedInfo: {}
     }
   }
@@ -87,7 +88,6 @@ class EditableTable extends React.Component {
   }
 
   onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys)
     this.setState({ selectedRowKeys }, () => {
       this.props.onSelectRows(selectedRowKeys)
     })
@@ -154,6 +154,27 @@ class EditableTable extends React.Component {
     });
   }
 
+  _renderScoresHistoryContent(record) {
+    return (
+      <div className="scores-history">
+        {record.scores_history.map((sh) => {
+          const { createdAt, scoreLabel, actionValue, scoreValue } = sh
+          const classnames = `action ${actionValue === '加分' ? 'add' : 'reduce'}`
+          return (
+            <div className="score-row" key={createdAt}>
+              <p>
+                <span className="created-at">{createdAt} :</span>
+                <span className="label">{scoreLabel}</span>
+                <span className={classnames}>{actionValue.substring(0, 1)}</span>
+                <span className="value">{scoreValue} 分</span>
+              </p>
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
   render() {
     const { selectedRowKeys, sortedInfo } = this.state
     const { currentUser, dataSource } = this.props
@@ -170,62 +191,7 @@ class EditableTable extends React.Component {
         cell: EditableCell,
       },
     }
-    this.columns = [
-      {
-        title: '昵称',
-        dataIndex: 'name',
-        key: 'name',
-        // width: '18%',
-        align: 'center',
-        className: 'header name',
-        editable: true,
-      },
-      {
-        title: '总历史',
-        dataIndex: 'history_total_dkp',
-        key: 'history_total_dkp',
-        // width: '15%',
-        align: 'center',
-        className: 'header',
-        editable: false,
-        sorter: (a, b) => a.history_total_dkp - b.history_total_dkp,
-        sortOrder: sortedInfo.columnKey === 'history_total_dkp' && sortedInfo.order
-      },
-      {
-        title: '剩余',
-        dataIndex: 'left_total_dkp',
-        key: 'left_total_dkp',
-        // width: '15%',
-        align: 'center',
-        className: 'header',
-        editable: false,
-        sorter: (a, b) => b.left_total_dkp - a.left_total_dkp,
-        sortOrder: sortedInfo.columnKey === 'left_total_dkp' && sortedInfo.order
-      },
-      {
-        title: '拍卖可用',
-        dataIndex: 'auction_dkp',
-        key: 'auction_dkp',
-        // width: '15%',
-        align: 'center',
-        className: 'header auction_dkp',
-        editable: false,
-        sorter: (a, b) => b.auction_dkp - a.auction_dkp,
-        sortOrder: sortedInfo.columnKey === 'auction_dkp' && sortedInfo.order
-      },
-      {
-        title: '总评分',
-        dataIndex: 'player_total_score',
-        key: 'player_total_score',
-        // width: '15%',
-        align: 'center',
-        className: 'header',
-        editable: true,
-        sorter: (a, b) => b.player_total_score - a.player_total_score,
-        sortOrder: sortedInfo.columnKey === 'player_total_score' && sortedInfo.order
-      }
-    ]
-
+    this.columns = configs.makeDKPColumns(sortedInfo)
     const columns = this.columns.map((col) => {
       if (!col.editable) {
         return col
@@ -255,23 +221,7 @@ class EditableTable extends React.Component {
       className: 'header actions',
       render: (text, record) => {
         const editable = this.isEditing(record)
-        const scoresHistoryContent = (
-          <div className="scores-history">
-            {record.scores_history.map((sh, idx) => {
-              const { createdAt, scoreLabel, actionValue, scoreValue } = sh
-              return (
-                <div className="score-row" key={idx}>
-                  <p>
-                    <span className="created-at">{createdAt} :</span>
-                    <span className="label">{scoreLabel}</span>
-                    <span className={`action ${actionValue === '加分' ? 'add' : 'reduce'}`}>{actionValue.substring(0, 1)}</span>
-                    <span className="value">{scoreValue} 分</span>
-                  </p>
-                </div>
-              )
-            })}
-          </div>
-        )
+        const scoresHistoryContent = this._renderScoresHistoryContent(record)
         return (
           <div className="table-edit">
             {editable && isAdmin && (
@@ -286,8 +236,13 @@ class EditableTable extends React.Component {
             )}
             {!editable && isAdmin && <span className="edit" onClick={() => this.edit(record.key)}>修改</span>}
             {!editable && isAdmin && <span className="delete" onClick={() => this.showConfirm(record)}>删除</span>}
-            <Popover content={scoresHistoryContent} placement="left" title="玩家历史DKP明细" trigger="click" overlayClassName="scores-history-overlay">
-              <span className="details">明细</span>
+            <Popover
+              content={scoresHistoryContent}
+              placement="left"
+              title="玩家历史DKP明细"
+              trigger="click"
+              overlayClassName="scores-history-overlay"
+            ><span className="details">明细</span>
             </Popover>
           </div>
         )
@@ -305,7 +260,7 @@ class EditableTable extends React.Component {
         rowClassName="editable-row"
         size="middle"
         pagination={{
-          defaultPageSize: 15
+          defaultPageSize: configs.table.defaultPageSize
         }}
       />
     )

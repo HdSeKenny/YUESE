@@ -11,7 +11,7 @@ var _player = _interopRequireDefault(require("../api/player/player.model"));
 
 var _environment = _interopRequireDefault(require("./environment"));
 
-var _data2 = _interopRequireDefault(require("./environment/_data2"));
+var _data2 = _interopRequireDefault(require("./environment/_data"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

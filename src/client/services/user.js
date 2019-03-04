@@ -5,7 +5,8 @@ const USER_URI = {
   LOGIN: '/auth/local',
   LOAD_SESSION: '/api/users/me',
   REGISTER: '/api/users/register',
-  LOGOUT: '/api/users/logout'
+  LOGOUT: '/api/users/logout',
+  BACKUP: '/api/users/backup'
 }
 
 export default {
@@ -34,6 +35,19 @@ export default {
       resolve(res.data)
     }).catch((error) => {
       reject(error)
+    })
+  }),
+
+  backupPlayersData: () => new Promise((resolve, reject) => {
+    const token = localStorage.getItem('id_token')
+    axios({
+      method: 'post',
+      url: USER_URI.BACKUP,
+      headers: { Authorization: `Bearer ${token}` }
+    }).then(() => {
+      resolve()
+    }).catch((error) => {
+      reject(error.response)
     })
   })
 }

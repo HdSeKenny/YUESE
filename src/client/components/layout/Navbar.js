@@ -54,6 +54,7 @@ class Navbar extends Component {
           <Menu.Item key="1" className="dkp-system">DKP SYSTEM</Menu.Item>
         </Menu>
         {currentUser && <li className="ant-menu-item" role="menuitem" onClick={() => this.logout()}>登出</li>}
+        {currentUser && <li className="ant-menu-item" role="menuitem"><Link to="/backup">备份</Link></li>}
       </Header>
     )
   }

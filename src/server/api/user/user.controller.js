@@ -3,7 +3,9 @@
 import jwt from 'jsonwebtoken'
 import multer from 'multer'
 import path from 'path'
+import fs from 'fs'
 import User from './user.model'
+import Player from '../player/player.model'
 import config from '../../config/environment'
 
 function respondWithResult(res, statusCode) {
@@ -194,4 +196,16 @@ export function changeUserAvatar(req, res) {
           .catch(validationError(res))
       })
   })
+}
+
+export function backup(req, res) {
+  return Player.find({})
+    .exec()
+    .then((players) => {
+      const moment = new Date()
+      const filename = `${moment.getFullYear()}_${moment.getMonth() + 1}_${moment.getDate()}_${moment.getTime()}`
+      fs.writeFileSync(`./data/${filename}.json`, JSON.stringify(players, null, 2));
+      res.status(200).json('ok')
+    })
+    .catch(handleError(res))
 }

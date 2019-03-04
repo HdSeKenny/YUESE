@@ -1,26 +1,14 @@
 import React from 'react'
 import { Modal, Menu, Dropdown, Button, Icon, Input, Row, Col, message } from 'antd'
 import moment from 'moment'
+import configs from '../../../configs'
 // import 'moment/locale/zh-cn'
-
 moment.locale()
 
 class CalculateScoresForm extends React.Component {
   state = {
-    addScoreOptions: [
-      '周五联赛第一场',
-      '周五联赛第二场',
-      '周六联赛',
-      '势力战',
-      '宣战',
-      '野外激情',
-      '藏金谷激情',
-      '其他'
-    ],
-    reduceScoreOptions: [
-      '玩家拍卖扣除'
-    ],
-
+    addScoreOptions: configs.batchActions.addScoreOptions,
+    reduceScoreOptions: configs.batchActions.reduceScoreOptions,
     scoreLabel: '周五联赛第一场',
     scoreValue: '',
     actions: [
@@ -34,15 +22,16 @@ class CalculateScoresForm extends React.Component {
   }
 
   handleMenuClick = (e) => {
-    this.setState({ scoreLabel: e.key }, () => {
-
-    })
+    this.setState({ scoreLabel: e.key })
   }
 
   handleActionsMenuClick = (e) => {
     const { actions, addScoreOptions, reduceScoreOptions } = this.state
     const newScoreLable = e.key === '加分' ? addScoreOptions[0] : reduceScoreOptions[0]
-    this.setState({ currentAction: actions.find(a => a.value === e.key), scoreLabel: newScoreLable })
+    this.setState({
+      currentAction: actions.find(a => a.value === e.key),
+      scoreLabel: newScoreLable
+    })
   }
 
   onScoreValueChange = (e) => {
@@ -88,7 +77,9 @@ class CalculateScoresForm extends React.Component {
       textAlign: 'left',
       color: '#1890ff',
       fontWeight: '600',
-      marginBottom: '20px'
+      marginBottom: '20px',
+      maxHeight: '200px',
+      overflowY: 'auto'
     }
 
     const batchPlayerLabelStyle = {
