@@ -14,7 +14,8 @@ var USER_URI = {
   LOGIN: '/auth/local',
   LOAD_SESSION: '/api/users/me',
   REGISTER: '/api/users/register',
-  LOGOUT: '/api/users/logout'
+  LOGOUT: '/api/users/logout',
+  BACKUP: '/api/users/backup'
 };
 var _default = {
   login: function login(email, password) {
@@ -47,6 +48,22 @@ var _default = {
         resolve(res.data);
       }).catch(function (error) {
         reject(error);
+      });
+    });
+  },
+  backupPlayersData: function backupPlayersData() {
+    return new Promise(function (resolve, reject) {
+      var token = localStorage.getItem('id_token');
+      (0, _axios.default)({
+        method: 'post',
+        url: USER_URI.BACKUP,
+        headers: {
+          Authorization: "Bearer ".concat(token)
+        }
+      }).then(function () {
+        resolve();
+      }).catch(function (error) {
+        reject(error.response);
       });
     });
   }

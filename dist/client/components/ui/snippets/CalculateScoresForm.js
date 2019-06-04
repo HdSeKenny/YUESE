@@ -9,6 +9,10 @@ var _react = _interopRequireDefault(require("react"));
 
 var _antd = require("antd");
 
+var _moment = _interopRequireDefault(require("moment"));
+
+var _configs = _interopRequireDefault(require("../../../configs"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -31,6 +35,9 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+// import 'moment/locale/zh-cn'
+_moment.default.locale();
+
 var CalculateScoresForm =
 /*#__PURE__*/
 function (_React$Component) {
@@ -50,27 +57,27 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(CalculateScoresForm)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
-      addScoreOptions: ['周五联赛第一场', '周五联赛第二场', '周六联赛', '势力战', '宣战', '野外激情', '藏金谷激情', '其他'],
-      reduceScoreOptions: ['玩家拍卖扣除'],
-      scorelabel: '周五联赛第一场',
+      addScoreOptions: _configs.default.batchActions.addScoreOptions,
+      reduceScoreOptions: _configs.default.batchActions.reduceScoreOptions,
+      scoreLabel: '周五联赛第一场',
       scoreValue: '',
       actions: [{
-        action: 'A',
+        label: 'A',
         value: '加分'
       }, {
-        action: 'R',
+        label: 'R',
         value: '减分'
       }],
       currentAction: {
-        action: 'A',
+        label: 'A',
         value: '加分'
       }
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleMenuClick", function (e) {
       _this.setState({
-        scorelabel: e.key
-      }, function () {});
+        scoreLabel: e.key
+      });
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleActionsMenuClick", function (e) {
@@ -84,7 +91,7 @@ function (_React$Component) {
         currentAction: actions.find(function (a) {
           return a.value === e.key;
         }),
-        scorelabel: newScoreLable
+        scoreLabel: newScoreLable
       });
     });
 
@@ -98,7 +105,7 @@ function (_React$Component) {
       var _this$state2 = _this.state,
           currentAction = _this$state2.currentAction,
           scoreValue = _this$state2.scoreValue,
-          scorelabel = _this$state2.scorelabel;
+          scoreLabel = _this$state2.scoreLabel;
 
       if (!scoreValue.trim()) {
         return _antd.message.error('请填写分数，并且分数必须是数字');
@@ -106,9 +113,9 @@ function (_React$Component) {
 
       _this.props.onSubmitScoreChange({
         action: currentAction,
-        label: scorelabel,
-        value: scoreValue,
-        createdAt: new Date()
+        scoreLabel: scoreLabel,
+        scoreValue: scoreValue,
+        createdAt: (0, _moment.default)().format('YYYY/MM/DD, hh:mm:ss')
       });
     });
 
@@ -123,7 +130,7 @@ function (_React$Component) {
       var _this$state3 = this.state,
           addScoreOptions = _this$state3.addScoreOptions,
           reduceScoreOptions = _this$state3.reduceScoreOptions,
-          scorelabel = _this$state3.scorelabel,
+          scoreLabel = _this$state3.scoreLabel,
           scoreValue = _this$state3.scoreValue,
           actions = _this$state3.actions,
           currentAction = _this$state3.currentAction;
@@ -167,7 +174,9 @@ function (_React$Component) {
         textAlign: 'left',
         color: '#1890ff',
         fontWeight: '600',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        maxHeight: '200px',
+        overflowY: 'auto'
       };
       var batchPlayerLabelStyle = {
         color: '#333',
@@ -206,7 +215,7 @@ function (_React$Component) {
         overlay: actionsMenu
       }, _react.default.createElement(_antd.Button, null, currentAction.value, " ", _react.default.createElement(_antd.Icon, {
         type: "down"
-      })))), currentAction.action === 'A' ? _react.default.createElement(_antd.Col, {
+      })))), currentAction.label === 'A' ? _react.default.createElement(_antd.Col, {
         span: 9,
         style: {
           textAlign: 'left'
@@ -215,7 +224,7 @@ function (_React$Component) {
         overlay: addScoreMenu
       }, _react.default.createElement(_antd.Button, {
         className: "actions-btn"
-      }, scorelabel || addScoreOptions[0], " ", _react.default.createElement(_antd.Icon, {
+      }, scoreLabel || addScoreOptions[0], " ", _react.default.createElement(_antd.Icon, {
         type: "down"
       })))) : _react.default.createElement(_antd.Col, {
         span: 9,
@@ -226,7 +235,7 @@ function (_React$Component) {
         overlay: reduceScoreMenu
       }, _react.default.createElement(_antd.Button, {
         className: "actions-btn"
-      }, scorelabel || reduceScoreOptions[0], " ", _react.default.createElement(_antd.Icon, {
+      }, scoreLabel || reduceScoreOptions[0], " ", _react.default.createElement(_antd.Icon, {
         type: "down"
       })))), _react.default.createElement(_antd.Col, {
         span: 10,

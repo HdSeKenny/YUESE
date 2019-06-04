@@ -6,8 +6,11 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/server-dev'
+    uri: 'mongodb://localhost/yuese-dev'
   },
+  host: process.env.PROJECT_DEVELOPMENT_HOST || 'localhost',
+  // Server port
+  port: process.env.PROJECT_DEVELOPMENT_PORT || 3000,
   // Seed database on startup
   seedDB: true,
   devServer: {

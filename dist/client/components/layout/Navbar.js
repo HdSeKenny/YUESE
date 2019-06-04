@@ -130,7 +130,12 @@ function (_Component) {
         onClick: function onClick() {
           return _this3.logout();
         }
-      }, "\u767B\u51FA"));
+      }, "\u767B\u51FA"), currentUser && _react.default.createElement("li", {
+        className: "ant-menu-item",
+        role: "menuitem"
+      }, _react.default.createElement(_reactRouterDom.Link, {
+        to: "/backup"
+      }, "\u5907\u4EFD")));
     }
   }]);
 

@@ -3,6 +3,12 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+Object.defineProperty(exports, "Backup", {
+  enumerable: true,
+  get: function get() {
+    return _Backup2.default;
+  }
+});
 Object.defineProperty(exports, "DKP", {
   enumerable: true,
   get: function get() {
@@ -15,6 +21,8 @@ Object.defineProperty(exports, "Admin", {
     return _Admin2.default;
   }
 });
+
+var _Backup2 = _interopRequireDefault(require("./Backup"));
 
 var _DKP2 = _interopRequireDefault(require("./DKP"));
 

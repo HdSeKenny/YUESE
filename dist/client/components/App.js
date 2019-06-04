@@ -41,16 +41,26 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-// const PrivateRoute = ({ component: Component, ...rest }) => (
-//   <Route
-//     {...rest}
-//     render={props => (
-//       fakeAuth.isAuthenticated === true
-//         ? <Component {...props} />
-//         : <Redirect to="/login" />
-//     )}
-//   />
-// )
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+var PrivateRoute = function PrivateRoute(_ref) {
+  var Component = _ref.component,
+      currentUser = _ref.currentUser,
+      rest = _objectWithoutProperties(_ref, ["component", "currentUser"]);
+
+  return _react.default.createElement(_reactRouterDom.Route, _extends({}, rest, {
+    render: function render(props) {
+      return currentUser ? _react.default.createElement(Component, props) : _react.default.createElement(_reactRouterDom.Redirect, {
+        to: "/admin"
+      });
+    }
+  }));
+};
+
 var App =
 /*#__PURE__*/
 function (_Component) {
@@ -115,6 +125,10 @@ function (_Component) {
             currentUser: currentUser
           });
         }
+      }), _react.default.createElement(PrivateRoute, {
+        path: "/backup",
+        component: _pages.Backup,
+        currentUser: currentUser
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "*",
         exact: true,

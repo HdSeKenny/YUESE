@@ -9,7 +9,7 @@ var _react = _interopRequireDefault(require("react"));
 
 var _antd = require("antd");
 
-var _moment = _interopRequireDefault(require("moment"));
+var _configs = _interopRequireDefault(require("../../../configs"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46,9 +46,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
-// import 'moment/locale/zh-cn'
-_moment.default.locale();
 
 var FormItem = _antd.Form.Item;
 
@@ -162,8 +159,6 @@ function (_React$Component2) {
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this3)), "onSelectChange", function (selectedRowKeys) {
-      console.log('selectedRowKeys changed: ', selectedRowKeys);
-
       _this3.setState({
         selectedRowKeys: selectedRowKeys
       }, function () {
@@ -198,9 +193,9 @@ function (_React$Component2) {
           item = newData[index];
           item.name = row.name;
           item.scores = {
-            auction_dkp: Math.trunc(row.left_total_dkp * 0.7),
-            history_total_dkp: row.history_total_dkp,
-            left_total_dkp: row.left_total_dkp,
+            auction_dkp: item.scores.auction_dkp,
+            history_total_dkp: item.scores.history_total_dkp,
+            left_total_dkp: item.scores.left_total_dkp,
             player_total_score: row.player_total_score
           };
           newData.splice(index, 1, _objectSpread({}, item));
@@ -208,9 +203,9 @@ function (_React$Component2) {
           item = {
             name: row.name,
             scores: {
-              auction_dkp: Math.trunc(row.left_total_dkp * 0.7),
-              history_total_dkp: row.history_total_dkp,
-              left_total_dkp: row.left_total_dkp,
+              auction_dkp: Math.trunc(item.scores.left_total_dkp * 0.7),
+              history_total_dkp: item.scores.history_total_dkp,
+              left_total_dkp: item.scores.left_total_dkp,
               player_total_score: row.player_total_score
             }
           };
@@ -246,7 +241,6 @@ function (_React$Component2) {
     _this3.state = {
       editingKey: '',
       selectedRowKeys: [],
-      // Check here to configure the default column
       sortedInfo: {}
     };
     return _this3;
@@ -258,6 +252,31 @@ function (_React$Component2) {
       this.setState({
         editingKey: key
       });
+    }
+  }, {
+    key: "_renderScoresHistoryContent",
+    value: function _renderScoresHistoryContent(record) {
+      return _react.default.createElement("div", {
+        className: "scores-history"
+      }, record.scores_history.map(function (sh) {
+        var createdAt = sh.createdAt,
+            scoreLabel = sh.scoreLabel,
+            actionValue = sh.actionValue,
+            scoreValue = sh.scoreValue;
+        var classnames = "action ".concat(actionValue === '加分' ? 'add' : 'reduce');
+        return _react.default.createElement("div", {
+          className: "score-row",
+          key: createdAt
+        }, _react.default.createElement("p", null, _react.default.createElement("span", {
+          className: "created-at"
+        }, createdAt, " :"), _react.default.createElement("span", {
+          className: "label"
+        }, scoreLabel), _react.default.createElement("span", {
+          className: classnames
+        }, actionValue.substring(0, 1)), _react.default.createElement("span", {
+          className: "value"
+        }, scoreValue, " \u5206")));
+      }));
     }
   }, {
     key: "render",
@@ -282,63 +301,7 @@ function (_React$Component2) {
           cell: EditableCell
         }
       };
-      this.columns = [{
-        title: '昵称',
-        dataIndex: 'name',
-        key: 'name',
-        // width: '18%',
-        align: 'center',
-        className: 'header name',
-        editable: true
-      }, {
-        title: '历史DKP',
-        dataIndex: 'history_total_dkp',
-        key: 'history_total_dkp',
-        // width: '15%',
-        align: 'center',
-        className: 'header',
-        editable: true,
-        sorter: function sorter(a, b) {
-          return a.history_total_dkp - b.history_total_dkp;
-        },
-        sortOrder: sortedInfo.columnKey === 'history_total_dkp' && sortedInfo.order
-      }, {
-        title: '剩余DKP',
-        dataIndex: 'left_total_dkp',
-        key: 'left_total_dkp',
-        // width: '15%',
-        align: 'center',
-        className: 'header',
-        editable: true,
-        sorter: function sorter(a, b) {
-          return b.left_total_dkp - a.left_total_dkp;
-        },
-        sortOrder: sortedInfo.columnKey === 'left_total_dkp' && sortedInfo.order
-      }, {
-        title: '拍卖可用',
-        dataIndex: 'auction_dkp',
-        key: 'auction_dkp',
-        // width: '15%',
-        align: 'center',
-        className: 'header auction_dkp',
-        editable: false,
-        sorter: function sorter(a, b) {
-          return b.auction_dkp - a.auction_dkp;
-        },
-        sortOrder: sortedInfo.columnKey === 'auction_dkp' && sortedInfo.order
-      }, {
-        title: '总评分',
-        dataIndex: 'player_total_score',
-        key: 'player_total_score',
-        // width: '15%',
-        align: 'center',
-        className: 'header',
-        editable: true,
-        sorter: function sorter(a, b) {
-          return b.player_total_score - a.player_total_score;
-        },
-        sortOrder: sortedInfo.columnKey === 'player_total_score' && sortedInfo.order
-      }];
+      this.columns = _configs.default.makeDKPColumns(sortedInfo);
       var columns = this.columns.map(function (col) {
         if (!col.editable) {
           return col;
@@ -365,26 +328,7 @@ function (_React$Component2) {
         render: function render(text, record) {
           var editable = _this4.isEditing(record);
 
-          var scoresHistoryContent = _react.default.createElement("div", {
-            className: "scores-history"
-          }, record.scores_history.reverse().map(function (sh, idx) {
-            var created_at = sh.created_at,
-                label = sh.label,
-                action = sh.action,
-                value = sh.value;
-            return _react.default.createElement("div", {
-              className: "score-row",
-              key: idx
-            }, _react.default.createElement("p", null, _react.default.createElement("span", {
-              className: "created-at"
-            }, (0, _moment.default)(created_at).format('YYYY/MM/DD, hh:mm:ss'), " :"), _react.default.createElement("span", {
-              className: "label"
-            }, label), _react.default.createElement("span", {
-              className: "action ".concat(action === '加分' ? 'add' : 'reduce')
-            }, action.substring(0, 1)), _react.default.createElement("span", {
-              className: "value"
-            }, value, " \u5206")));
-          }));
+          var scoresHistoryContent = _this4._renderScoresHistoryContent(record);
 
           return _react.default.createElement("div", {
             className: "table-edit"
@@ -419,7 +363,8 @@ function (_React$Component2) {
             content: scoresHistoryContent,
             placement: "left",
             title: "\u73A9\u5BB6\u5386\u53F2DKP\u660E\u7EC6",
-            trigger: "hover"
+            trigger: "click",
+            overlayClassName: "scores-history-overlay"
           }, _react.default.createElement("span", {
             className: "details"
           }, "\u660E\u7EC6")));
@@ -440,7 +385,7 @@ function (_React$Component2) {
         rowClassName: "editable-row",
         size: "middle",
         pagination: {
-          defaultPageSize: 15
+          defaultPageSize: _configs.default.table.defaultPageSize
         }
       });
     }

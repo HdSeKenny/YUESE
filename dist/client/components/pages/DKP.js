@@ -94,7 +94,8 @@ function (_Component) {
             _this.setState({
               players: players,
               addVisible: false,
-              confirmLoading: false
+              confirmLoading: false,
+              searchedPlayers: players
             }, function () {
               _antd.message.success('成功添加玩家');
             });
@@ -116,20 +117,20 @@ function (_Component) {
       }).then(function () {
         players.forEach(function (p) {
           if (selectedRowKeys.includes(p._id)) {
-            if (scoreObj.action.action === 'A') {
-              p.scores.history_total_dkp += parseInt(scoreObj.value, 10);
-              p.scores.left_total_dkp += parseInt(scoreObj.value, 10);
+            if (scoreObj.action.label === 'A') {
+              p.scores.history_total_dkp += parseInt(scoreObj.scoreValue, 10);
+              p.scores.left_total_dkp += parseInt(scoreObj.scoreValue, 10);
             } else {
-              p.scores.left_total_dkp -= parseInt(scoreObj.value, 10);
+              p.scores.left_total_dkp -= parseInt(scoreObj.scoreValue, 10);
             }
 
-            p.scores_history.push({
-              label: scoreObj.label,
-              action: scoreObj.action.value,
-              value: scoreObj.value,
-              created_at: scoreObj.createdAt
-            });
             p.scores.auction_dkp = Math.trunc(p.scores.left_total_dkp * 0.7);
+            p.scores_history.unshift({
+              scoreLabel: scoreObj.scoreLabel,
+              actionValue: scoreObj.action.value,
+              scoreValue: scoreObj.scoreValue,
+              createdAt: scoreObj.createdAt
+            });
           }
         });
 
@@ -240,6 +241,7 @@ function (_Component) {
         });
         return player ? player.name : '';
       }).join(', ');
+      var isAdmin = currentUser && currentUser.role === 'admin';
       return _react.default.createElement("div", {
         className: "dkp"
       }, _react.default.createElement(_antd.Row, {
@@ -253,7 +255,7 @@ function (_Component) {
         onChange: function onChange(e) {
           return _this3.onSearchMember(e);
         }
-      })), currentUser && currentUser.role === 'admin' && _react.default.createElement(_antd.Col, {
+      })), isAdmin && _react.default.createElement(_antd.Col, {
         span: 14
       }, _react.default.createElement(_antd.Button, {
         type: "primary",

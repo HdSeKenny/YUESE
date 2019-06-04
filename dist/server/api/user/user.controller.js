@@ -12,6 +12,7 @@ exports.upsert = upsert;
 exports.me = me;
 exports.authCallback = authCallback;
 exports.changeUserAvatar = changeUserAvatar;
+exports.backup = backup;
 
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
@@ -19,7 +20,11 @@ var _multer = _interopRequireDefault(require("multer"));
 
 var _path = _interopRequireDefault(require("path"));
 
+var _fs = _interopRequireDefault(require("fs"));
+
 var _user = _interopRequireDefault(require("./user.model"));
+
+var _player = _interopRequireDefault(require("../player/player.model"));
 
 var _environment = _interopRequireDefault(require("../../config/environment"));
 
@@ -218,4 +223,15 @@ function changeUserAvatar(req, res) {
       }).catch(validationError(res));
     });
   });
+}
+
+function backup(req, res) {
+  return _player.default.find({}).exec().then(function (players) {
+    var moment = new Date();
+    var filename = "".concat(moment.getFullYear(), "_").concat(moment.getMonth() + 1, "_").concat(moment.getDate(), "_").concat(moment.getTime());
+
+    _fs.default.writeFileSync("./data/".concat(filename, ".json"), JSON.stringify(players, null, 2));
+
+    res.status(200).json('ok');
+  }).catch(handleError(res));
 }

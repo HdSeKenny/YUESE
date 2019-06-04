@@ -137,7 +137,7 @@ function upsert(req, res) {
 var findOneAndUpdate = function findOneAndUpdate(id, item) {
   return function () {
     return new Promise(function (resolve, reject) {
-      _player.default.findById(id).exec().then(function (player) {
+      return _player.default.findById(id).exec().then(function (player) {
         if (!player) {
           return reject(new Error('No such player'));
         }
@@ -146,22 +146,22 @@ var findOneAndUpdate = function findOneAndUpdate(id, item) {
           player.scores_history = [];
         }
 
-        if (item.action.action === 'A') {
-          player.scores.history_total_dkp += parseInt(item.value, 10);
-          player.scores.left_total_dkp += parseInt(item.value, 10);
+        if (item.action.label === 'A') {
+          player.scores.history_total_dkp += parseInt(item.scoreValue, 10);
+          player.scores.left_total_dkp += parseInt(item.scoreValue, 10);
         } else {
-          player.scores.left_total_dkp -= parseInt(item.value, 10);
+          player.scores.left_total_dkp -= parseInt(item.scoreValue, 10);
         }
 
         player.scores.auction_dkp = Math.trunc(player.scores.left_total_dkp * 0.7); // 剩余DKP总分的百分之70
 
-        player.scores_history.push({
-          label: item.label,
-          action: item.action.value,
-          value: item.value,
-          created_at: item.created_at
+        player.scores_history.unshift({
+          scoreLabel: item.scoreLabel,
+          actionValue: item.action.value,
+          scoreValue: item.scoreValue,
+          createdAt: item.createdAt
         });
-        player.save().then(function () {
+        return player.save().then(function () {
           return resolve();
         }).catch(function (err) {
           return reject(err);
